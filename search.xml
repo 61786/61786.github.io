@@ -154,4 +154,23 @@
         <tag>springboot</tag>
       </tags>
   </entry>
+  <entry>
+    <title>spring dubbo项目依赖springboot dubbo项目启动失败</title>
+    <url>/uncategorized/spring%20dubbo%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96springboot%20dubbo%E9%A1%B9%E7%9B%AE%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5/</url>
+    <content><![CDATA[<h5 id="spring-dubbo项目依赖springboot-dubbo项目启动失败"><a href="#spring-dubbo项目依赖springboot-dubbo项目启动失败" class="headerlink" title="spring dubbo项目依赖springboot dubbo项目启动失败"></a>spring dubbo项目依赖springboot dubbo项目启动失败</h5><p>场景昨天晚上有需求需要在本项目中依赖整合其它系统的dubbo服务  </p>
+<p>本项目为spring+dubbo服务 </p>
+<p>外部系统springboot+dubbo服务 </p>
+<p>在项目中service项目引入外部jar包依赖后项目一直启动报错，首先是</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SLF4J: Class path contains multiple SLF4J bindings.</span><br><span class="line">SLF4J: Found binding in [jar:file:...&#x2F;repository&#x2F;ch&#x2F;qos&#x2F;logback&#x2F;logback-classic&#x2F;1.1.7&#x2F;logback-classic-1.1.7.jar!&#x2F;org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class]</span><br><span class="line">SLF4J: Found binding in [jar:file:...&#x2F;repository&#x2F;org&#x2F;slf4j&#x2F;slf4j-log4j12&#x2F;1.7.21&#x2F;slf4j-log4j12-1.7.21.jar!&#x2F;org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class]</span><br></pre></td></tr></table></figure>
+
+<p>由log可以看到因为由多个<code>SLF4J bindings</code>绑定  ,即存在多个SLF4J实现类 ，去掉不需要的jar解决</p>
+<p>排除之后没想到又报错了</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from ServletContext resource [&#x2F;WEB-INF&#x2F;springmvc-servlet.xml]; nested exception is java.io.FileNotFoundException: Could not open ServletContext resource [&#x2F;NONE]</span><br><span class="line">	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:341)</span><br><span class="line">	at org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions(XmlBeanDefinitionReader.java:302)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:174)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:209)</span><br><span class="line">	at org.springframework.beans.factory.support.AbstractBeanDefinitionReader.loadBeanDefinitions(AbstractBeanDefinitionReader.java:180)</span><br><span class="line">	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:125)</span><br><span class="line">	at org.springframework.web.context.support.XmlWebApplicationContext.loadBeanDefinitions(XmlWebApplicationContext.java:94)</span><br><span class="line">	at org.springframework.context.support.AbstractRefreshableApplicationContext.refreshBeanFactory(AbstractRefreshableApplicationContext.java:131)</span><br></pre></td></tr></table></figure>
+
+<p>一般情况下是找不到xml文件了 由于本项目service没有web-inf更没有web.xml 所以报错加上之后ok,但是由于测试，生产环境更改可能引起不必要的问题，所以第二种解决方法 排除外部jar包中的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">spring-boot-start</span><br></pre></td></tr></table></figure>
+
+<p>终于完美解决 ，spring-boot-start为什么会引起这个问题待研究</p>
+]]></content>
+  </entry>
 </search>
