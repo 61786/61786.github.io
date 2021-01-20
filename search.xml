@@ -1,40 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>centos7安装docker</title>
-    <url>/uncategorized/centos7%E5%AE%89%E8%A3%85docker/</url>
-    <content><![CDATA[<p>刚开始了解docker总是听说Docker 是一个<a href="https://baike.baidu.com/item/%E5%BC%80%E6%BA%90/246339" target="_blank" rel="noopener">开源</a>的应用容器引擎 让开发者可以打包他们的应用以及依赖包到一    个可移植的镜像中，然后发布到任何流行的 <a href="https://baike.baidu.com/item/Linux" target="_blank" rel="noopener">Linux</a>或Windows 机器上，也可以实现<a href="https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E5%8C%96/547949" target="_blank" rel="noopener">虚拟化</a>容器是完全使用<a href="https://baike.baidu.com/item/%E6%B2%99%E7%AE%B1/393318" target="_blank" rel="noopener">沙箱</a>机制，相互之间不会有任何接口。 处于对Docker的好奇准备操作一波，由于之前用的虚拟机是centos6版本而看到docker官网上说最低版本需要centos7内核版本3.0.8以上，果断下载centos7安装再次不多说。</p>
-<p>开始讲安装docker过程：</p>
-<ol>
-<li>升级yum源</li>
-<li>安装docker所需依赖包  yum update  2. yum install -y yum-utils device-mapper-persistent-data lvm2 </li>
-<li>修改docker镜像源 yum-config-manager –add-repo <a href="https://download.docker.com/linux/centos/docker-ce.repo" target="_blank" rel="noopener">https://download.docker.com/linux/centos/docker-ce.repo</a> 发现还是一样的网速慢 使用docker命令提示连接异常</li>
-<li>查看docker版本 yum list docker-ce –showduplicates | sort -r </li>
-<li>根据需求选择对应docker版本yum install docker-ce-版本号 </li>
-<li>启动docker:  systemctl start docker        加入开机启动  systemctl enable docker </li>
-</ol>
-<p>到此docker已安装完成 测试简单 hello-world命令  先pull镜像 docker pull hello-world  然后报错</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> docker: Error response from daemon: Get https:&#x2F;&#x2F;registry-1.docker.io&#x2F;v2&#x2F;: net&#x2F;http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers).</span><br><span class="line"></span><br><span class="line">See &#39;docker run --help&#39;.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">百度需要修改docker镜像源 ： docker默认的源为国外官方源，下载速度较慢，可以改为国内，加速 </span><br><span class="line"></span><br><span class="line">方案一： 修改或新增 &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line"></span><br><span class="line">\# vi &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&quot;registry-mirrors&quot;: [&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;]</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">方案二：修改或新增 &#x2F;etc&#x2F;sysconfig&#x2F;docker，在OPTIONS变量后追加参数  --registry-mirror&#x3D;&lt;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&gt;</span><br><span class="line"></span><br><span class="line">最终使用方案一解决： vi daemon.json </span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;registry.docker-cn.com&quot;,&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;]</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">service docker restart 成功！</span><br></pre></td></tr></table></figure>
-
-<p>最后赋上docker常见命令：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> -----------------     docker ps 查看当前正在运行的容器   -----------------    docker ps -a 查看所有容器的状态</span><br><span class="line">-----------------    docker start&#x2F;stop id&#x2F;name 启动&#x2F;停止某个容器    -----------------    docker attach id 进入某个容器(使用exit退出后容器也跟着停止运行)</span><br><span class="line">-----------------    docker exec -ti id 启动一个伪终端以交互式的方式进入某个容器（使用exit退出后容器不停止运行）</span><br><span class="line">-----------------    docker images 查看本地镜像    -----------------    docker rm id&#x2F;name 删除某个容器    -----------------     docker rmi id&#x2F;name 删除某个镜像</span><br><span class="line">-----------------    docker run --name test -ti ubuntu &#x2F;bin&#x2F;bash  复制ubuntu容器并且重命名为test且运行，然后以伪终端交互式方式进入容器，运行bash</span><br><span class="line">-----------------     docker build -t soar&#x2F;centos:7.1 .  通过当前目录下的Dockerfile创建一个名为soar&#x2F;centos:7.1的镜像</span><br><span class="line">-----------------    docker run -d -p 2222:22 --name test soar&#x2F;centos:7.1  以镜像soar&#x2F;centos:7.1创建名为test的容器，并以后台模式运行，并做端口映射到宿主机2222端口，P参数重启容器宿主机端口会发生改变</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-]]></content>
-      <tags>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo搭建博客</title>
     <url>/uncategorized/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>之前上班由于比较忙，没时间将项目用过的东西记录下来等过段时间再用时发现大部分忘记了，看同事大部分都使用hexo博客来记录，话不多说直接搞起：</p>
@@ -85,6 +51,40 @@
 ]]></content>
       <tags>
         <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>centos7安装docker</title>
+    <url>/uncategorized/centos7%E5%AE%89%E8%A3%85docker/</url>
+    <content><![CDATA[<p>刚开始了解docker总是听说Docker 是一个<a href="https://baike.baidu.com/item/%E5%BC%80%E6%BA%90/246339" target="_blank" rel="noopener">开源</a>的应用容器引擎 让开发者可以打包他们的应用以及依赖包到一    个可移植的镜像中，然后发布到任何流行的 <a href="https://baike.baidu.com/item/Linux" target="_blank" rel="noopener">Linux</a>或Windows 机器上，也可以实现<a href="https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E5%8C%96/547949" target="_blank" rel="noopener">虚拟化</a>容器是完全使用<a href="https://baike.baidu.com/item/%E6%B2%99%E7%AE%B1/393318" target="_blank" rel="noopener">沙箱</a>机制，相互之间不会有任何接口。 处于对Docker的好奇准备操作一波，由于之前用的虚拟机是centos6版本而看到docker官网上说最低版本需要centos7内核版本3.0.8以上，果断下载centos7安装再次不多说。</p>
+<p>开始讲安装docker过程：</p>
+<ol>
+<li>升级yum源</li>
+<li>安装docker所需依赖包  yum update  2. yum install -y yum-utils device-mapper-persistent-data lvm2 </li>
+<li>修改docker镜像源 yum-config-manager –add-repo <a href="https://download.docker.com/linux/centos/docker-ce.repo" target="_blank" rel="noopener">https://download.docker.com/linux/centos/docker-ce.repo</a> 发现还是一样的网速慢 使用docker命令提示连接异常</li>
+<li>查看docker版本 yum list docker-ce –showduplicates | sort -r </li>
+<li>根据需求选择对应docker版本yum install docker-ce-版本号 </li>
+<li>启动docker:  systemctl start docker        加入开机启动  systemctl enable docker </li>
+</ol>
+<p>到此docker已安装完成 测试简单 hello-world命令  先pull镜像 docker pull hello-world  然后报错</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> docker: Error response from daemon: Get https:&#x2F;&#x2F;registry-1.docker.io&#x2F;v2&#x2F;: net&#x2F;http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers).</span><br><span class="line"></span><br><span class="line">See &#39;docker run --help&#39;.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">百度需要修改docker镜像源 ： docker默认的源为国外官方源，下载速度较慢，可以改为国内，加速 </span><br><span class="line"></span><br><span class="line">方案一： 修改或新增 &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line"></span><br><span class="line">\# vi &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&quot;registry-mirrors&quot;: [&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;]</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">方案二：修改或新增 &#x2F;etc&#x2F;sysconfig&#x2F;docker，在OPTIONS变量后追加参数  --registry-mirror&#x3D;&lt;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&gt;</span><br><span class="line"></span><br><span class="line">最终使用方案一解决： vi daemon.json </span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;registry.docker-cn.com&quot;,&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;]</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">service docker restart 成功！</span><br></pre></td></tr></table></figure>
+
+<p>最后赋上docker常见命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> -----------------     docker ps 查看当前正在运行的容器   -----------------    docker ps -a 查看所有容器的状态</span><br><span class="line">-----------------    docker start&#x2F;stop id&#x2F;name 启动&#x2F;停止某个容器    -----------------    docker attach id 进入某个容器(使用exit退出后容器也跟着停止运行)</span><br><span class="line">-----------------    docker exec -ti id 启动一个伪终端以交互式的方式进入某个容器（使用exit退出后容器不停止运行）</span><br><span class="line">-----------------    docker images 查看本地镜像    -----------------    docker rm id&#x2F;name 删除某个容器    -----------------     docker rmi id&#x2F;name 删除某个镜像</span><br><span class="line">-----------------    docker run --name test -ti ubuntu &#x2F;bin&#x2F;bash  复制ubuntu容器并且重命名为test且运行，然后以伪终端交互式方式进入容器，运行bash</span><br><span class="line">-----------------     docker build -t soar&#x2F;centos:7.1 .  通过当前目录下的Dockerfile创建一个名为soar&#x2F;centos:7.1的镜像</span><br><span class="line">-----------------    docker run -d -p 2222:22 --name test soar&#x2F;centos:7.1  以镜像soar&#x2F;centos:7.1创建名为test的容器，并以后台模式运行，并做端口映射到宿主机2222端口，P参数重启容器宿主机端口会发生改变</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+]]></content>
+      <tags>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
