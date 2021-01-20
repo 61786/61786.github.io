@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Spring boot 之 Schedlued</title>
-    <url>/uncategorized/Spring%20boot%20%E4%B9%8B%20Schedlued/</url>
-    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>SpringBoot自带的 Schedule，可以将它看成一个轻量级的Quartz，而且使用起来比Quartz简单许多</p>
-<p>第一步：可以再自定义的类上添加@EnableScheduling 开启定时任务，也可以再启动器上加上该注解开启</p>
-<p>第二步： 在对应的方法上加入@Scheduled  其中有三个属性分别是</p>
-<p>1.fixedRate：会为所有任务的开始执行时间编排一个表，假如fixedRate=5000，且第一次开始时间是10:00:00 </p>
-<p><code>当执行任务耗时小于fixedRate设置的时间时，将会按照表中的开始时间执行任务，即每隔5秒会执行一个任务</code>： </p>
-<p> 当执行任务耗时大于fixedRate设置的时间时，以下一张图就很清楚的表示了 </p>
-<p>解析一下：</p>
-<p>fixedRate设置的也是为fixedRate=5000</p>
-<p>第一个任务开始执行时间是0:00,耗时8秒</p>
-<p>第二个任务本应该开始执行时间是0：05，但是第一个任务执行完时间已经是0：08，所以第二个任务在第一个任务执行完毕之后会立即执行，耗时是3s</p>
-<p>第三个任务本应该开始执行时间是0：10，但是前两个任务执行完毕时间已经是0：11，所以第三个任务在第二个任务执行完毕之后会立即执行，耗时是6s</p>
-<p>第四个任务，也同第二、第三个任务一样，在预计开始执行的时间（这里第四个任务预计开始执行时间是0:15），因为上一个任务还没有执行完毕，所以要等待上一个人执行完毕之后才会执行。</p>
-<p>第五个任务预计开始执行时间是0:20，而前四个任务在0:19已经执行完毕，需要等待1秒，到达我们预计的开始执行时间（0:20）才会执行第五个任务。</p>
-<p>2.fixedDelay</p>
-<p>这个就比之前的fixedRate简单得多。如设置fixedRate=5000.下一个任务只需要盯着上一个任务的屁股（执行完毕的时间）就行了。上一个任务执行完毕5秒之后，下一个任务就会开始执行</p>
-<p>3.initialDelay</p>
-<p>用于配合fixedRate和fixedDelay使用的，作用是在容器启动后经过多长时间才开始执行第一次任务。</p>
-<p>4.cron</p>
-<p>在指定的时间执行任务 根据表达式定义的不同 间隔时间不同如：0 0 1 * * ? 表示每天凌晨一点执行一次任务</p>
-<p>想了解更多请自行修改。</p>
-<p>————————————————<br>版权声明：本文为CSDN博主「小码农liangliping」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a href="https://blog.csdn.net/qq_33643072/article/details/81334268" target="_blank" rel="noopener">https://blog.csdn.net/qq_33643072/article/details/81334268</a> </p>
-]]></content>
-      <tags>
-        <tag>java</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>centos7安装docker</title>
     <url>/uncategorized/centos7%E5%AE%89%E8%A3%85docker/</url>
     <content><![CDATA[<p>刚开始了解docker总是听说Docker 是一个<a href="https://baike.baidu.com/item/%E5%BC%80%E6%BA%90/246339" target="_blank" rel="noopener">开源</a>的应用容器引擎 让开发者可以打包他们的应用以及依赖包到一    个可移植的镜像中，然后发布到任何流行的 <a href="https://baike.baidu.com/item/Linux" target="_blank" rel="noopener">Linux</a>或Windows 机器上，也可以实现<a href="https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E5%8C%96/547949" target="_blank" rel="noopener">虚拟化</a>容器是完全使用<a href="https://baike.baidu.com/item/%E6%B2%99%E7%AE%B1/393318" target="_blank" rel="noopener">沙箱</a>机制，相互之间不会有任何接口。 处于对Docker的好奇准备操作一波，由于之前用的虚拟机是centos6版本而看到docker官网上说最低版本需要centos7内核版本3.0.8以上，果断下载centos7安装再次不多说。</p>
@@ -82,6 +53,35 @@
 <p>至此 博客已经搭建完毕 本地访问4000端口可预览！搭建好之后有没有原主题很low，我们可以去 <a href="https://hexo.io/themes/" target="_blank" rel="noopener">博客主题网站</a>  来选择自己喜欢的主题样式down下来修改 _config.yml文件主题配置名即可  。     修改主题命令为（git bash下）hexo generate –deploy   hexo g -d  即可！</p>
 <hr>
 <p>接下来要忙的就是发布自己的博客 使用任意markdown格式的笔记 小编使用的Typora 感觉蛮好用，再Typora编辑好博客后使用 hexo new (文章命名自定义)     hexo g      hexo d 即可查看新增的博客！！！</p>
+]]></content>
+      <tags>
+        <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring boot 之 Schedlued</title>
+    <url>/uncategorized/Spring%20boot%20%E4%B9%8B%20Schedlued/</url>
+    <content><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>SpringBoot自带的 Schedule，可以将它看成一个轻量级的Quartz，而且使用起来比Quartz简单许多</p>
+<p>第一步：可以再自定义的类上添加@EnableScheduling 开启定时任务，也可以再启动器上加上该注解开启</p>
+<p>第二步： 在对应的方法上加入@Scheduled  其中有三个属性分别是</p>
+<p>1.fixedRate：会为所有任务的开始执行时间编排一个表，假如fixedRate=5000，且第一次开始时间是10:00:00 </p>
+<p><code>当执行任务耗时小于fixedRate设置的时间时，将会按照表中的开始时间执行任务，即每隔5秒会执行一个任务</code>： </p>
+<p> 当执行任务耗时大于fixedRate设置的时间时，以下一张图就很清楚的表示了 </p>
+<p>解析一下：</p>
+<p>fixedRate设置的也是为fixedRate=5000</p>
+<p>第一个任务开始执行时间是0:00,耗时8秒</p>
+<p>第二个任务本应该开始执行时间是0：05，但是第一个任务执行完时间已经是0：08，所以第二个任务在第一个任务执行完毕之后会立即执行，耗时是3s</p>
+<p>第三个任务本应该开始执行时间是0：10，但是前两个任务执行完毕时间已经是0：11，所以第三个任务在第二个任务执行完毕之后会立即执行，耗时是6s</p>
+<p>第四个任务，也同第二、第三个任务一样，在预计开始执行的时间（这里第四个任务预计开始执行时间是0:15），因为上一个任务还没有执行完毕，所以要等待上一个人执行完毕之后才会执行。</p>
+<p>第五个任务预计开始执行时间是0:20，而前四个任务在0:19已经执行完毕，需要等待1秒，到达我们预计的开始执行时间（0:20）才会执行第五个任务。</p>
+<p>2.fixedDelay</p>
+<p>这个就比之前的fixedRate简单得多。如设置fixedRate=5000.下一个任务只需要盯着上一个任务的屁股（执行完毕的时间）就行了。上一个任务执行完毕5秒之后，下一个任务就会开始执行</p>
+<p>3.initialDelay</p>
+<p>用于配合fixedRate和fixedDelay使用的，作用是在容器启动后经过多长时间才开始执行第一次任务。</p>
+<p>4.cron</p>
+<p>在指定的时间执行任务 根据表达式定义的不同 间隔时间不同如：0 0 1 * * ? 表示每天凌晨一点执行一次任务</p>
+<p>想了解更多请自行修改。</p>
+<p>————————————————<br>版权声明：本文为CSDN博主「小码农liangliping」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a href="https://blog.csdn.net/qq_33643072/article/details/81334268" target="_blank" rel="noopener">https://blog.csdn.net/qq_33643072/article/details/81334268</a> </p>
 ]]></content>
       <tags>
         <tag>java</tag>
