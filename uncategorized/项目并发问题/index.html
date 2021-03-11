@@ -15,13 +15,13 @@
   
 
   
-    <meta name="description" content="ZhaoPu,个人博客" />
+    <meta name="description" content="项目并发问题" />
   
   
   
   <link rel="icon" type="image/x-icon" href="/images/footer-logo.png">
   
-  <title> [ ZhaoPu ]个人博客</title>
+  <title>项目并发问题 [ ZhaoPu ]</title>
   
     <!-- stylesheets list from config.yml -->
     
@@ -45,7 +45,7 @@
       
           
             
-              <li class="pure-menu-item actived"><a href="/" class="pure-menu-link">首页</a></li>
+              <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
             
           
       
@@ -128,171 +128,99 @@
 
   <div class="container" id="content-outer">
     <div class="inner" id="content-inner">
-      
-
-  <div class="recent-posts">
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/项目并发问题/"><h2>项目并发问题</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2021-03-11T13:38:15.373Z">
-            2021-03-11
-          </time>
-          
-          <span class="slash">/</span>
-          
-          
-          
-
-        </div>
-
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        项目并发问题
+      </h1>
+      <span>
         
-        <a class="more" href="/uncategorized/项目并发问题/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/理解JVM垃圾回收器/"><h2>理解JVM垃圾回收器</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2021-03-11T13:38:15.342Z">
-            2021-03-11
-          </time>
-          
-          <span class="slash">/</span>
-          
-          
-          
-
-        </div>
-
+        <time class="time" datetime="2021-03-11T13:38:15.373Z">
+        2021-03-11
+      </time>
         
-        <a class="more" href="/uncategorized/理解JVM垃圾回收器/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/spring dubbo项目依赖springboot dubbo项目启动失败/"><h2>spring dubbo项目依赖springboot dubbo项目启动失败</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2021-01-19T14:12:00.709Z">
-            2021-01-19
-          </time>
-          
-          <span class="slash">/</span>
-          
-          
-          
-
-        </div>
-
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
         
-        <a class="more" href="/uncategorized/spring dubbo项目依赖springboot dubbo项目启动失败/"> 阅读全文〉</a>
-      </article>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 6 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <h2 id="项目并发问题"><a href="#项目并发问题" class="headerlink" title="项目并发问题"></a>项目并发问题</h2><h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>最近在做一款支付项目，相应的并发比较搞且要求数据一致性比较强，但是测试并发时，一直存在并发问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public void demo(String status, String orderNo) &#123;</span><br><span class="line">     try &#123;</span><br><span class="line">         if (&quot;SUCCESS&quot;.equals(status)) &#123;</span><br><span class="line">             updatePayStatus(orderNo);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125; catch (Exception e) &#123;</span><br><span class="line">         e.printStackTrace();</span><br><span class="line">     &#125; finally &#123;</span><br><span class="line">         notifyPay(0L);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> public void updatePayStatus(String orderNo) &#123;</span><br><span class="line">     &#x2F;&#x2F;do something</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> public void notifyPay(Long id) &#123;</span><br><span class="line">     &#x2F;&#x2F;do something</span><br><span class="line">     TUser user &#x3D; userRepository.findOne(id);</span><br><span class="line">     String callbackNumber &#x3D; user.getCallbackNumber() + 1;</span><br><span class="line">     update(user, &quot;1&quot;, callbackNumber);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> public void update(TUser user, String callbackStatus, String callbackNumer) &#123;</span><br><span class="line">     user.setCallbackStatus(callbackStatus);</span><br><span class="line">     user.setCallbackNumber(callbackNumer);</span><br><span class="line">     userRepository.save(user);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>大概代码逻辑处理如上： 如果支付成功，（1）修改支付状态 并最后通知上有平台系统，（2）<strong>并修改回调状态</strong> 重点来了。</p>
+<p>由于并发时在某一瞬间，（2）处先查询到了旧的数据此时（1）还未作修改在（1）修改完成之后此时（2）处开始执行修改逻辑，结果就悲剧了导致充值笔数一直对不上，排查问题时notify是异步定时任务所以并没有太注意，一直在看其它处修改逻辑怀疑是没有加事务导致，就将其它几处修改订单表的逻辑合并为一块处理，然而并没有解决问题，最后在同事的帮忙下找到问题（还是自己太菜），更诡异的是笔数问题解决后，查看后台日志时一直在打印某张表的数据修改时产生死锁，这还得了赶紧又一轮排插，发现充值部分有两处代码更新数据时where条件同为订单ID（二级索引列），度娘后得知InnDB，因此首先锁住二级索引（两行），接着会锁住相应主键所对应的记录；</p>
+<h4 id="死锁成因"><a href="#死锁成因" class="headerlink" title="死锁成因"></a>死锁成因</h4><p>​     了解了innodb锁的基本原理后，下面分析下死锁的成因。如前面所说，死锁一般是事务相互等待对方资源，最后形成环路造成的。下面简单讲下造成相互等待最后形成环路的例子。 </p>
+<p>1,不同表相同记录行锁冲突2,相同表记录行锁冲突3,不同索引锁冲突 4, gap锁冲突</p>
+<h4 id="如何尽可能避免死锁"><a href="#如何尽可能避免死锁" class="headerlink" title="如何尽可能避免死锁"></a>如何尽可能避免死锁</h4><p>1）以固定的顺序访问表和行。比如对第2节两个job批量更新的情形，简单方法是对id列表先排序，后执行，这样就避免了交叉等待锁的情形；又比如对于3.1节的情形，将两个事务的sql顺序调整为一致，也能避免死锁。</p>
+<p>2）大事务拆小。大事务更倾向于死锁，如果业务允许，将大事务拆小。</p>
+<p>3）在同一个事务中，尽可能做到一次锁定所需要的所有资源，减少死锁概率。</p>
+<p>4）降低隔离级别。如果业务允许，将隔离级别调低也是较好的选择，比如将隔离级别从RR调整为RC，可以避免掉很多因为gap锁造成的死锁。</p>
+<p>5）为表添加合理的索引。可以看到如果不走索引将会为表的每一行记录添加上锁，死锁的概率大大增大。</p>
+<p>在此记录一下。</p>
+
+    </div>
+
+  </article>
+  <div class="toc-container">
     
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/spring依赖springboot项目异常/"><h2>spring依赖springboot项目异常</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2020-07-17T08:58:00.000Z">
-            2020-07-17
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list" itemprop="keywords"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/springboot/" rel="tag">springboot</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/uncategorized/spring依赖springboot项目异常/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/springboot访问html/"><h2>springboot访问html</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2020-02-28T12:24:42.000Z">
-            2020-02-28
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list" itemprop="keywords"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/beetl/" rel="tag">beetl</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/uncategorized/springboot访问html/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/centos7安装docker/"><h2>centos7安装docker</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2020-02-24T03:32:48.000Z">
-            2020-02-24
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list" itemprop="keywords"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/uncategorized/centos7安装docker/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/hexo搭建博客/"><h2>hexo搭建博客</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2020-02-21T12:08:34.000Z">
-            2020-02-21
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list" itemprop="keywords"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/uncategorized/hexo搭建博客/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/uncategorized/Spring boot 之 Schedlued/"><h2>Spring boot 之 Schedlued</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2020-02-21T09:36:34.000Z">
-            2020-02-21
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list" itemprop="keywords"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/uncategorized/Spring boot 之 Schedlued/"> 阅读全文〉</a>
-      </article>
-    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#项目并发问题"><span class="toc-text">项目并发问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#死锁成因"><span class="toc-text">死锁成因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何尽可能避免死锁"><span class="toc-text">如何尽可能避免死锁</span></a></li></ol></li></ol></li></ol>
   </div>
+
+
+  </div>
+</div>
+<div class="copyright">
+    <span>本作品采用</span>
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/uncategorized/%E7%90%86%E8%A7%A3JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" rel="next" title="理解JVM垃圾回收器">
+          理解JVM垃圾回收器
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+      </div>
+    </div>
+  
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <div id="gitalk-container"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({
+            clientID: 'xxx',
+            clientSecret: 'xxx',
+            id: window.location.pathname,
+            repo: 'issue repo name',
+            owner: 'Github username',
+            admin: 'github username'
+        })
+        gitalk.render('gitalk-container')
+    </script>
 
 
 
